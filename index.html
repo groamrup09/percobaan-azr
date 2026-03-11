@@ -48,12 +48,19 @@ p{
   box-shadow:0 12px 25px rgba(0,0,0,0.12);
 }
 
-iframe{
-  width:100%;
-  height:500px;
-  border:none;
-  border-radius:10px;
+button{
   margin-top:15px;
+  padding:10px 18px;
+  border:none;
+  background:#2563eb;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:500;
+}
+
+button:hover{
+  background:#1d4ed8;
 }
 
 hr{
@@ -70,6 +77,40 @@ footer{
   font-size:14px;
   text-align:center;
   color:#475569;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  z-index:999;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+}
+
+.modal-content{
+  background:white;
+  margin:5% auto;
+  padding:20px;
+  width:80%;
+  max-width:900px;
+  border-radius:10px;
+}
+
+.modal iframe{
+  width:100%;
+  height:500px;
+  border:none;
+}
+
+.close{
+  float:right;
+  font-size:28px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -113,7 +154,9 @@ Paradigma ini menjadi fondasi penting dalam pengembangan aplikasi modern termasu
 Class merupakan blueprint dari objek. Sedangkan object adalah implementasi nyata dari class tersebut.
 </p>
 
-<iframe src="https://dartpad.dev/?id=212783cdfb8b02e07cd86ca9f0596fe9&null_safety=true&run=true"></iframe>
+<button onclick="openModal('212783cdfb8b02e07cd86ca9f0596fe9')">
+Lihat Kode DartPad
+</button>
 
 </div>
 
@@ -124,7 +167,9 @@ Class merupakan blueprint dari objek. Sedangkan object adalah implementasi nyata
 Constructor merupakan metode khusus yang dipanggil secara otomatis saat objek dibuat. Constructor digunakan untuk menginisialisasi nilai awal dari atribut objek.
 </p>
 
-<iframe src="https://dartpad.dev/?id=7cac28e1cd6a3c9dc8c9c39e590318ed&null_safety=true&run=true"></iframe>
+<button onclick="openModal('7cac28e1cd6a3c9dc8c9c39e590318ed')">
+Lihat Kode DartPad
+</button>
 
 </div>
 
@@ -136,7 +181,9 @@ Constructor merupakan metode khusus yang dipanggil secara otomatis saat objek di
 Validasi constructor digunakan untuk memastikan data yang dimasukkan ke dalam objek berada pada kondisi yang valid.
 </p>
 
-<iframe src="https://dartpad.dev/?id=d64dbbab69d90e18341ded035e84c38c&null_safety=true&run=true"></iframe>
+<button onclick="openModal('d64dbbab69d90e18341ded035e84c38c')">
+Lihat Kode DartPad
+</button>
 
 </div>
 
@@ -147,7 +194,9 @@ Validasi constructor digunakan untuk memastikan data yang dimasukkan ke dalam ob
 Encapsulation adalah teknik menyembunyikan data internal objek agar tidak dapat diakses secara langsung dari luar class.
 </p>
 
-<iframe src="https://dartpad.dev/?id=b774072fd3efc25ce5446b6739306e7c&null_safety=true&run=true"></iframe>
+<button onclick="openModal('b774072fd3efc25ce5446b6739306e7c')">
+Lihat Kode DartPad
+</button>
 
 </div>
 
@@ -158,7 +207,9 @@ Encapsulation adalah teknik menyembunyikan data internal objek agar tidak dapat 
 Named parameter memungkinkan pengisian parameter berdasarkan nama variabel sehingga kode menjadi lebih jelas dan mudah dipahami.
 </p>
 
-<iframe src="https://dartpad.dev/?id=dbfd7f2af3131610f92c6162f8929fad&null_safety=true&run=true"></iframe>
+<button onclick="openModal('dbfd7f2af3131610f92c6162f8929fad')">
+Lihat Kode DartPad
+</button>
 
 </div>
 
@@ -177,71 +228,36 @@ Dalam bahasa Dart, konsep OOP dapat diterapkan dengan sangat baik sehingga mempe
 </footer>
 
 </div>
-<!-- MODALS -->
-<div id="967b579cbb677c6c6af712861f3707e8" class="modal">
+
+<!-- MODAL -->
+<div id="modalDart" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeModal('967b579cbb677c6c6af712861f3707e8')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=967b579cbb677c6c6af712861f3707e8&null_safety=true"></iframe>
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe id="dartFrame"></iframe>
   </div>
-</div>
-
-<div id="556cd77508c8381a0719ead99a41fe27" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('556cd77508c8381a0719ead99a41fe27')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=556cd77508c8381a0719ead99a41fe27&null_safety=true"></iframe>
-  </div>
-</div>
-
-<div id="44b739d4c8e40937611f40845e661707" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('44b739d4c8e40937611f40845e661707')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=44b739d4c8e40937611f40845e661707&null_safety=true"></iframe>
-  </div>
-</div>
-
-<div id="d220dd26797081f9eb41f7a14d4e33df" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('d220dd26797081f9eb41f7a14d4e33df')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=d220dd26797081f9eb41f7a14d4e33df&null_safety=true"></iframe>
-  </div>
-</div>
-
-<div id="b803d969482da4165193e77c5295c795" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('b803d969482da4165193e77c5295c795')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=b803d969482da4165193e77c5295c795&null_safety=true"></iframe>
-  </div>
-</div>
-
-
-  <div id="2c81b3556ee53679d568178fb3799329" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('2c81b3556ee53679d568178fb3799329')">&times;</span>
-    <iframe src="https://dartpad.dev/?id=2c81b3556ee53679d568178fb3799329&null_safety=true"></iframe>
-  </div>
-</div>
-
-
-
 </div>
 
 <script>
+
 function openModal(id){
-  document.getElementById(id).style.display = "block";
+  document.getElementById("modalDart").style.display="block";
+  document.getElementById("dartFrame").src=
+  "https://dartpad.dev/?id="+id+"&null_safety=true&run=true";
 }
 
-function closeModal(id){
-  document.getElementById(id).style.display = "none";
+function closeModal(){
+  document.getElementById("modalDart").style.display="none";
+  document.getElementById("dartFrame").src="";
 }
 
-window.onclick = function(event){
-  const modals = document.getElementsByClassName("modal");
-  for(let i = 0; i < modals.length; i++){
-    if(event.target == modals[i]){
-      modals[i].style.display = "none";
-    }
+window.onclick=function(event){
+  let modal=document.getElementById("modalDart");
+  if(event.target==modal){
+    closeModal();
   }
 }
+
 </script>
+
 </body>
 </html>
