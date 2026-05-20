@@ -347,7 +347,11 @@ void main() {
                 <li>📌 Generic types: List&lt;T&gt;, Map&lt;K, V&gt;</li>
                 <li>📌 Nullable types: String?, int?</li>
             </ul>
-            <pre><code>extension IntListExtensions on List&lt;int&gt; {
+            <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A            
+    extension IntListExtensions on List&lt;int&gt; {
     int get sum => fold(0, (total, item) => total + item);
     double get average => isEmpty ? 0 : sum / length;
 }
@@ -384,6 +388,9 @@ print(name.withDefault('Guest')); // 'Guest'
 }
 
             </code></pre>
+             <button class="btn" onclick="openModal('8f76d6b3b2b4abc829be7757c3970084')">
+        Lihat Kode
+      </button>
         </div>
     </div>
 
@@ -428,6 +435,9 @@ print(2.power(3));         // 8
 }
             </code></pre>
         </div>
+        <button class="btn" onclick="openModal('84cb298211939f477003aad314c60a99')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Slide 9: Generic Extensions -->
@@ -437,23 +447,26 @@ print(2.power(3));         // 8
             <pre><code>
 // Nama: Azriel Miracle Yuandre
 // Nim: 251410024
-// Kelas: SI2A                
+// Kelas: SI2A
+
 extension ListExtensions<T> on List<T> {
   // Safe get dengan default
   T? getOrNull(int index) {
     if (index < 0 || index >= length) return null;
     return this[index];
   }
-  
+
   // Split list menjadi chunks
   List<List<T>> chunk(int size) {
     var chunks = <List<T>>[];
     for (var i = 0; i < length; i += size) {
-      chunks.add(sublist(i, i + size > length ? length : i + size));
+      int end = i + size;
+      if (end > length) end = length;
+      chunks.add(sublist(i, end));
     }
     return chunks;
   }
-  
+
   // Distinct items
   List<T> distinct() {
     var result = <T>[];
@@ -466,14 +479,24 @@ extension ListExtensions<T> on List<T> {
   }
 }
 
-void main(){
-// Penggunaan
-var numbers = [1, 2, 3, 4, 5, 6, 7];
-print(numbers.chunk(3));  // [[1, 2, 3], [4, 5, 6], [7]]
-print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
+void main() {
+  // Penggunaan
+  var numbers = [1, 2, 3, 4, 5, 6, 7];
+  print(numbers.chunk(3)); // [[1, 2, 3], [4, 5, 6], [7]]
+
+  var duplicates = [1, 2, 2, 3, 3, 3];
+  print(duplicates.distinct()); // [1, 2, 3]
+
+  // Contoh getOrNull
+  print(numbers.getOrNull(0));  // Output: 1
+  print(numbers.getOrNull(10)); // Output: null
 }
             </code></pre>
         </div>
+        <button class="btn" onclick="openModal('17ff233c6158494973d877f0f4776c88')">
+        Lihat Kode
+      </button>
+
     </div>
 
     <!-- Extension tanpa nama -->
@@ -504,6 +527,9 @@ print(today.startOfDay); // 2026-02-20 00:00:00.000
 
             </code></pre>
         </div>
+         <button class="btn" onclick="openModal('8f76d6b3b2b4abc829be7757c3970084')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Karakter khusus & konflik nama -->
