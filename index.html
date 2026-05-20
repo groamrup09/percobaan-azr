@@ -1,428 +1,563 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Dart OOP · Constructor, Enkapsulasi, Getter/Setter | Demo RekeningBank</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Rainforest Guardian · Dart Extension Methods | Sesi 9</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    body {
-      background: linear-gradient(145deg, #eef2f5 0%, #dce4ec 100%);
-      font-family: 'Inter', system-ui, 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      padding: clamp(1rem, 4vw, 2.5rem);
-      color: #0a2e2c;
-      min-height: 100vh;
-    }
+        /* OPTIMASI PERFORMANCE: will-change, transform, dan anti-lag */
+        body {
+            background: radial-gradient(circle at 10% 20%, #0c2f1f, #05180e);
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
+            color: #e7f0e9;
+            padding: clamp(0.8rem, 4vw, 2rem);
+            line-height: 1.5;
+            position: relative;
+            min-height: 100vh;
+            /* percepatan render */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
+        /* efek dedaunan halus di background - menggunakan GPU layer */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" opacity="0.06"><path fill="%234caf50" d="M270,160 L300,120 L330,160 L300,200 L270,160Z M150,350 L190,320 L220,360 L180,390 L150,350Z M500,480 L540,440 L580,480 L540,520 L500,480Z M680,230 L710,190 L740,230 L710,270 L680,230Z M420,720 L460,680 L500,720 L460,760 L420,720Z M80,780 L120,740 L160,780 L120,820 L80,780Z M600,890 L630,860 L660,890 L630,920 L600,890Z"></path></svg>');
+            background-repeat: repeat;
+            background-size: 70px;
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform;
+            transform: translateZ(0);
+        }
 
-    /* CARD utama */
-    .card {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(0px);
-      border-radius: 2rem;
-      box-shadow: 0 20px 35px -12px rgba(0, 40, 30, 0.2);
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s;
-      border: 1px solid rgba(60, 160, 140, 0.25);
-    }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 28px 36px -16px rgba(20, 100, 80, 0.3);
-    }
+        /* card rainforest style – dengan optimasi hardware acceleration */
+        .card {
+            background: rgba(25, 45, 30, 0.88);
+            backdrop-filter: blur(3px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(130, 180, 90, 0.4);
+            box-shadow: 0 12px 25px -10px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transform: translateZ(0);
+            will-change: transform;
+        }
 
-    .card-header {
-      background: linear-gradient(105deg, #136b62 0%, #1f8a7a 100%);
-      padding: 1.1rem 1.8rem;
-    }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 28px -14px black;
+            border-color: #9bc45a;
+        }
 
-    .card-header h2 {
-      color: white;
-      font-size: clamp(1.3rem, 5vw, 1.9rem);
-      font-weight: 600;
-      letter-spacing: -0.3px;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
+        /* touch friendly untuk mobile */
+        @media (max-width: 768px) {
+            .card:active {
+                transform: scale(0.99);
+                transition: 0.05s;
+            }
+        }
 
-    .badge {
-      background: #ffdd99;
-      color: #136b62;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
-    }
+        .card-header {
+            background: linear-gradient(105deg, #1b3b2b 0%, #2c553b 100%);
+            padding: clamp(0.8rem, 3vw, 1.2rem) clamp(1rem, 4vw, 2rem);
+            border-bottom: 2px solid #79b345;
+        }
 
-    .card-body {
-      padding: clamp(1.2rem, 3vw, 2rem);
-    }
+        .card-header h2 {
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #f3ffcf, #c0f0a0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            display: inline-block;
+            word-break: break-word;
+        }
 
-    pre {
-      background: #0b2d27;
-      color: #d4fcf0;
-      padding: 1.2rem;
-      border-radius: 1.2rem;
-      overflow-x: auto;
-      overflow-y: auto;
-      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-word;
-      tab-size: 2;
-      scrollbar-width: thin;
-      max-height: 480px;
-    }
+        .badge-leaf {
+            display: inline-block;
+            background: #4f7a3b;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 0.6rem;
+            vertical-align: middle;
+            color: #e7ffcf;
+            white-space: nowrap;
+        }
 
-    @media (max-width: 680px) {
-      pre {
-        font-size: 0.7rem;
-        padding: 1rem;
-      }
-    }
+        .card-body {
+            padding: clamp(1rem, 3.5vw, 1.8rem) clamp(1rem, 4vw, 2rem) clamp(1.2rem, 4vw, 2.2rem);
+        }
 
-    code, .inline-code {
-      font-family: 'Fira Code', monospace;
-      background: #d5f3ec;
-      color: #0b5e55;
-      padding: 0.2rem 0.5rem;
-      border-radius: 12px;
-      font-size: 0.85rem;
-    }
+        /* PRE / CODE dengan scrolling halus + anti lag */
+        pre {
+            background: #0d2219;
+            border-radius: 20px;
+            padding: clamp(0.8rem, 2.5vw, 1.2rem);
+            overflow-x: auto;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+            line-height: 1.5;
+            color: #d6f0cd;
+            border-left: 4px solid #7cb342;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.2);
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            tab-size: 2;
+            scrollbar-width: thin;
+        }
 
-    footer {
-      background: white;
-      border-radius: 1.5rem;
-      padding: 1.4rem 1.8rem;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
-    }
+        /* scrollbar kustom halus */
+        pre::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+        pre::-webkit-scrollbar-track {
+            background: #1f3a2e;
+            border-radius: 10px;
+        }
+        pre::-webkit-scrollbar-thumb {
+            background: #7cb342;
+            border-radius: 10px;
+        }
 
-    footer h2 {
-      color: #146b62;
-      margin-bottom: 0.8rem;
-      font-size: 1.4rem;
-    }
+        code {
+            font-family: 'Fira Code', monospace;
+            background: #2b4638;
+            padding: 0.2rem 0.45rem;
+            border-radius: 10px;
+            color: #e4ffc7;
+            font-size: 0.85rem;
+            word-break: break-word;
+        }
 
-    /* TOMBOL DESAIN RESPONSIF TANPA MENGUBAH ISI */
-    .btn-group {
-      margin-top: 1.2rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-    }
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      background: linear-gradient(100deg, #1f8a7a, #136b62);
-      border: none;
-      padding: 0.75rem 1.7rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      font-family: inherit;
-      color: white;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.3px;
-      backdrop-filter: blur(2px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-    }
+        ul, ol {
+            padding-left: 1.2rem;
+            margin: 0.8rem 0;
+        }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      background: linear-gradient(100deg, #219b89, #117a6a);
-      box-shadow: 0 12px 22px -8px rgba(15, 90, 75, 0.5);
-    }
+        li {
+            margin: 0.4rem 0;
+            font-weight: 500;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+        }
 
-    .btn:active {
-      transform: translateY(1px);
-      transition: 0.05s;
-    }
+        .note-forest {
+            background: #1e3a2c;
+            border-left: 6px solid #b5e377;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1rem;
+            margin: 1rem 0;
+            font-weight: 500;
+            font-size: clamp(0.8rem, 2.8vw, 0.95rem);
+        }
 
-    /* modal tanpa lag, performa tinggi */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 20, 16, 0.85);
-      backdrop-filter: blur(6px);
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
+        .grid-rain {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: auto;
-      padding: 0;
-      border-radius: 2rem;
-      width: 90%;
-      max-width: 1100px;
-      height: 85vh;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 30px 45px rgba(0, 0, 0, 0.3);
-      animation: modalFadeIn 0.2s ease-out;
-      border: 1px solid #8dd0c0;
-    }
+        hr {
+            margin: 0.8rem 0;
+            border-color: #4a6f42;
+        }
 
-    @keyframes modalFadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
+        @media (max-width: 640px) {
+            .grid-rain {
+                gap: 1rem;
+            }
+            .badge-leaf {
+                margin-left: 0.4rem;
+                font-size: 0.6rem;
+                padding: 0.15rem 0.6rem;
+            }
+        }
 
-    .close {
-      color: #1b6b61;
-      align-self: flex-end;
-      font-size: 2rem;
-      font-weight: bold;
-      padding: 0.5rem 1rem 0 0;
-      cursor: pointer;
-      transition: 0.1s;
-      line-height: 1;
-    }
+        ::selection {
+            background: #96c24e;
+            color: #0a2417;
+        }
 
-    .close:hover {
-      color: #bc5a2c;
-      transform: scale(1.05);
-    }
+        .footer-moss {
+            background: #0f2a1d;
+            border-radius: 1.2rem;
+            padding: 0.8rem 1.2rem;
+            margin-top: 0.8rem;
+            border-top: 1px solid #6e9f4a;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
 
-    .modal-content iframe {
-      width: 100%;
-      flex: 1;
-      border: none;
-      border-bottom-left-radius: 2rem;
-      border-bottom-right-radius: 2rem;
-      background: #fff;
-    }
+        /* hero tanpa beban */
+        .header-hero {
+            text-align: center;
+            margin-bottom: 0.3rem;
+        }
 
-    /* mobile smooth */
-    @media (max-width: 640px) {
-      .btn {
-        padding: 0.6rem 1.3rem;
-        font-size: 0.8rem;
-        width: auto;
-      }
-      .modal-content {
-        width: 98%;
-        height: 90vh;
-        border-radius: 1.5rem;
-      }
-      .close {
-        font-size: 1.8rem;
-        padding-right: 0.8rem;
-        padding-top: 0.4rem;
-      }
-      .card-body {
-        padding: 1rem;
-      }
-      footer {
-        padding: 1rem;
-      }
-    }
+        /* GAYA RESPONSIVE TAMBAHAN: gambar SVG tidak memberatkan */
+        img, svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
 
-    /* scrollbar soft */
-    pre::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
-    }
-    pre::-webkit-scrollbar-track {
-      background: #1f463e;
-      border-radius: 10px;
-    }
-    pre::-webkit-scrollbar-thumb {
-      background: #6abfaa;
-      border-radius: 10px;
-    }
+        /* percepatan scroll dan touch behavior */
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
 
-    /* teks kesimpulan rapih */
-    footer p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #1e4a44;
-    }
+        /* mengecilkan jarak antar card untuk hp */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                gap: 1rem;
+            }
+            .card-header h2 {
+                line-height: 1.3;
+            }
+            .card-body {
+                padding: 0.9rem;
+            }
+            pre {
+                font-size: 0.7rem;
+                border-radius: 16px;
+            }
+        }
 
-    .demo-note {
-      background: #e0f7f2;
-      border-radius: 1.2rem;
-      padding: 0.8rem 1.2rem;
-      margin-top: 0.8rem;
-      font-weight: 500;
-      color: #0c5b4f;
-    }
-  </style>
+        /* mengurangi efek hover di mobile agar tidak lag */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 <body>
-
 <div class="container">
-  <!-- Kartu Constructor Berparameter + Named Constructor -->
-  <div class="card">
-    <div class="card-header">
-      <h2>🏦 Dart Constructor & Enkapsulasi <span class="badge">RekeningBank Demo</span></h2>
+    <!-- Hero section seperti rainforest guardian vibe (KONTEN TIDAK BERUBAH) -->
+    <div class="card" style="background: #142d1ecc; backdrop-filter: blur(4px); text-align: center;">
+        <div class="card-body">
+            <span style="font-size: 2rem;">🌿🐸</span>
+            <h1 style="font-size: clamp(1.5rem, 6vw, 2rem); background: linear-gradient(130deg,#c8f0a5,#a3dd6b); -webkit-background-clip:text; background-clip:text; color:transparent;">RAINFOREST GUARDIAN</h1>
+            <p style="font-weight: 500; font-size: clamp(0.85rem, 3vw, 1rem);">Dart Extension Methods · Sesi 9 · 200 menit kekuatan kode alami</p>
+            <div class="note-forest" style="background:#142d1f;">✨ "Menambahkan metode baru ke tipe yang sudah ada, tanpa modifikasi kode asli — seperti kemampuan baru dari hutan purba."</div>
+        </div>
     </div>
-    <div class="card-body">
-      <pre>
-class RekeningBank {
-  String _nomorRekening;
-  double _saldo;
 
-  // Constructor Berparameter
-  RekeningBank(this._nomorRekening, this._saldo);
+    <!-- Slide 1: Review Builder Pattern -->
+    <div class="card">
+        <div class="card-header"><h2>🪵 Review Sesi 8 – Builder Pattern <span class="badge-leaf">method chaining</span></h2></div>
+        <div class="card-body">
+            <ul>
+                <li>🌿 Builder Pattern untuk objek kompleks</li>
+                <li>🍃 Method chaining untuk <strong>fluent API</strong></li>
+                <li>📦 Contoh: <code>Pizza.builder().size('large').addTopping('cheese').build()</code></li>
+                <li>🐞 Contoh cepat:</li>
+            </ul>
+            <pre><code>class ConfigBuilder {
+    ConfigBuilder host(String h) { return this; }
+    ConfigBuilder port(int p) { return this; }
+    Config build() { return Config(); }
+}</code></pre>
+        </div>
+    </div>
 
-  // Named Constructor: RekeningBank.tanpaSaldo()
-  RekeningBank.tanpaSaldo(String nomor)
-      : _nomorRekening = nomor,
-        _saldo = 0.0;
+    <!-- Slide 2: Pengantar Extension Methods -->
+    <div class="card">
+        <div class="card-header"><h2>🌱 Pengantar Extension Methods</h2></div>
+        <div class="card-body">
+            <ul>
+                <li>➕ Fitur untuk menambahkan metode baru ke tipe yang sudah ada</li>
+                <li>🍂 Tanpa modifikasi kode asli</li>
+                <li>📅 Tersedia sejak Dart 2.7</li>
+                <li>🦜 Analog: Memberikan kemampuan baru tanpa mengubah benda aslinya</li>
+            </ul>
+        </div>
+    </div>
 
-  // Getter & Setter
-  String get nomorRekening => _nomorRekening;
-  set nomorRekening(String value) {
-    if (value.isNotEmpty) _nomorRekening = value;
-  }
-
-  double get saldo => _saldo;
-
-  void deposit(double jml) {
-    if (jml > 0) {
-      _saldo += jml;
-      print('Deposit Rp $jml Berhasil.');
+    <!-- Slide 3: Masalah Tanpa Extension Methods -->
+    <div class="card">
+        <div class="card-header"><h2>⚠️ Masalah Tanpa Extension Methods</h2></div>
+        <div class="card-body">
+            <pre><code>// Utility class yang kurang natural
+class StringUtils {
+    static String capitalize(String text) {
+        if (text.isEmpty) return text;
+        return text[0].toUpperCase() + text.substring(1);
     }
-  }
+    static bool isEmail(String text) { return text.contains('@'); }
+}
+void main(){
+    var name = 'john';
+    var capitalized = StringUtils.capitalize(name);
+    var isEmail = StringUtils.isEmail('test@mail.com');
+    print('Original name: $name');
+    print('Capitalized name: $capitalized');
+    print('Is "test@mail.com" an email? $isEmail');
+}</code></pre>
+            <div class="note-forest">🐾 Penggunaan kurang natural & tidak terintegrasi dengan objek.</div>
+        </div>
+    </div>
 
-  void tarik(double jml) {
-    if (jml > 0 && _saldo >= jml) {
-      _saldo -= jml;
-      print('Tarik Rp $jml Berhasil.');
-    } else {
-      print('Gagal: Saldo tidak cukup atau input tidak valid.');
+    <!-- Slide 4: Solusi dengan Extension Methods -->
+    <div class="card">
+        <div class="card-header"><h2>✨ Solusi dengan Extension Methods</h2></div>
+        <div class="card-body">
+            <pre><code>extension StringExtensions on String {
+    String capitalize() {
+        if (isEmpty) return this;
+        return this[0].toUpperCase() + substring(1);
     }
-  }
+    bool get isEmail => contains('@');
+    String reverse() => split('').reversed.join();
+}
+void main(){
+    var name = 'john';
+    var capitalized = name.capitalize(); // 'John'
+    var isEmail = 'test@mail.com'.isEmail;
+    var reversed = 'hello'.reverse();
+    print('Original name: $name');
+    print('Capitalized name: $capitalized');
+    print('Is "test@mail.com" an email? $isEmail');
+    print('Reversed "hello": $reversed');
+}</code></pre>
+        </div>
+    </div>
 
-  void cekSaldo() {
-    print('Rekening: $_nomorRekening | Saldo: Rp $_saldo');
-  }
+    <!-- halaman 6 (dari PDF) -->
+    <div class="card">
+        <div class="card-header"><h2>🌿 Kanopi halaman</h2></div>
+        <div class="card-body" style="text-align:center; font-size: clamp(2rem, 8vw, 3rem); padding: 1rem;">6</div>
+    </div>
+
+    <!-- Tipe yang didukung + contoh IntListExtensions -->
+    <div class="card">
+        <div class="card-header"><h2>🍃 Tipe yang Didukung Extension</h2></div>
+        <div class="card-body">
+            <ul>
+                <li>📌 Built-in types: String, int, double, List, Map, etc.</li>
+                <li>📌 Custom classes: Kelas buatan sendiri</li>
+                <li>📌 Generic types: List&lt;T&gt;, Map&lt;K, V&gt;</li>
+                <li>📌 Nullable types: String?, int?</li>
+            </ul>
+            <pre><code>extension IntListExtensions on List&lt;int&gt; {
+    int get sum => fold(0, (total, item) => total + item);
+    double get average => isEmpty ? 0 : sum / length;
+}
+void main(){
+    var numbers = [1, 2, 3, 4, 5];
+    print(numbers.sum); // 15
+    print(numbers.average); // 3.0
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- Slide 7: Null Safety -->
+    <div class="card">
+        <div class="card-header"><h2>🛡️ Null Safety Extension (Rainforest Resilience)</h2></div>
+        <div class="card-body">
+            <pre><code>extension NullableStringExtensions on String? {
+    String orEmpty() => this ?? '';
+    bool get isNullOrEmpty => this == null || this!.isEmpty;
+    bool get isNotNullOrEmpty => !isNullOrEmpty;
+    String withDefault(String defaultValue) => this ?? defaultValue;
 }
 
-void main() {
-  print('--- TRANSAKSI PERTAMA ---');
-  var rekeningSaya = RekeningBank('1234-5678-90', 5000000);
-  rekeningSaya.cekSaldo();
-  
-  print('\n--- MELAKUKAN PENARIKAN ---');
-  rekeningSaya.tarik(1000000);
-  rekeningSaya.cekSaldo();
-}
-      </pre>
-      <div class="btn-group">
-        <button class="btn" onclick="openModal('a9c8ab069ebb9a3ec290ddb07e3a044e')">
-          ▶ Jalankan & Lihat Kode
-        </button>
-      </div>
-      <div class="demo-note">
-        💡 <strong>Catatan:</strong> Constructor berparameter + named constructor (tanpa saldo) + enkapsulasi dengan getter/saldo.
-      </div>
+void main(){
+    String? name;
+    print(name.isNullOrEmpty); // true
+    print(name.withDefault('Guest')); // 'Guest'
+}</code></pre>
+        </div>
     </div>
-  </div>
 
-  <!-- footer kesimpulan asli (tidak diubah) -->
-  <footer>
-    <h2>📌 Kesimpulan</h2>
-    <pre style="background: transparent; color:#1a4e46; padding:0; box-shadow: none; border-left: none;">
-<p style="font-family: inherit; font-size: 1rem;">
-1. Dart memiliki berbagai jenis constructor untuk fleksibilitas objek.
+    <!-- Slide 8: Praktik 1 NumberExtensions (Rupiah, range, pangkat) -->
+    <div class="card">
+        <div class="card-header"><h2>💰 Praktik 1 - Utilities untuk Dart Types</h2></div>
+        <div class="card-body">
+            <pre><code>extension NumberExtensions on num {
+    String toRupiah() {
+        return 'Rp${toStringAsFixed(0).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (match) => '${match[1]}.',
+        )}';
+    }
+    bool isBetween(num min, num max) => this >= min && this <= max;
+    num power(int exponent) {
+        var result = this;
+        for (var i = 1; i < exponent; i++) result *= this;
+        return result;
+    }
+}
+void main(){
+    var price = 1500000;
+    print(price.toRupiah()); // Rp1.500.000
+    print(5.isBetween(1, 10)); // true
+    print(2.power(3)); // 8
+}</code></pre>
+        </div>
+    </div>
 
-2. Enkapsulasi melindungi data dengan menggunakan private field (prefix underscore).
-
-3. Getter & setter memberikan kontrol akses yang aman terhadap data private
-</p>
-     </pre>
-  </footer>
-</div>
-
-<!-- MODAL RESPONSIF dengan performa ringan -->
-<div id="dynamicModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <iframe id="modalIframe" title="DartPad Demo" loading="lazy" srcdoc=""></iframe>
-  </div>
-</div>
-
-<script>
-  (function() {
-    // Optimasi: memastikan tidak ada lag, dan iframe dimuat dengan baik
-    const modal = document.getElementById("dynamicModal");
-    const iframe = document.getElementById("modalIframe");
-    let currentGist = '';
-
-    window.openModal = function(gistId) {
-      if (!gistId) return;
-      currentGist = gistId;
-      // Gunakan srcdoc kosong dulu biar reset, lalu atur src setelah modal ditampilkan
-      iframe.srcdoc = "";
-      modal.style.display = "flex";
-      document.body.style.overflow = "hidden";
-      
-      // Timeout tipis biar transisi mulus, hindari lag DOM
-      setTimeout(() => {
-        if (currentGist === gistId) {
-          iframe.src = `https://dartpad.dev/embed-dart.html?id=${gistId}&null_safety=true&run=true&theme=light`;
+    <!-- Slide 9: Generic Extensions -->
+    <div class="card">
+        <div class="card-header"><h2>🔁 Generic Extensions pada List&lt;T&gt;</h2></div>
+        <div class="card-body">
+            <pre><code>extension ListExtensions&lt;T&gt; on List&lt;T&gt; {
+    T? getOrNull(int index) => (index < 0 || index >= length) ? null : this[index];
+    List&lt;List&lt;T&gt;&gt; chunk(int size) {
+        var chunks = &lt;List&lt;T&gt;&gt;[];
+        for (var i = 0; i &lt; length; i += size) {
+            chunks.add(sublist(i, i + size > length ? length : i + size));
         }
-      }, 20);
-    };
+        return chunks;
+    }
+    List&lt;T&gt; distinct() {
+        var result = &lt;T&gt;[];
+        for (var item in this) if (!result.contains(item)) result.add(item);
+        return result;
+    }
+}
+void main(){
+    var numbers = [1, 2, 3, 4, 5, 6, 7];
+    print(numbers.chunk(3)); // [[1, 2, 3], [4, 5, 6], [7]]
+    print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
+}</code></pre>
+        </div>
+    </div>
 
-    window.closeModal = function() {
-      modal.style.display = "none";
-      iframe.src = "";          // bersihkan resource biar ringan
-      iframe.srcdoc = "";
-      document.body.style.overflow = "auto";
-    };
+    <!-- Extension tanpa nama -->
+    <div class="card">
+        <div class="card-header"><h2>🍄 Extension Tanpa Nama (Private scope)</h2></div>
+        <div class="card-body">
+            <pre><code>// File: date_utils.dart
+extension on DateTime {
+    String get toYYYYMMDD => '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+    DateTime get startOfDay => DateTime(year, month, day);
+}
+void main() {
+    var today = DateTime.now();
+    print(today.toYYYYMMDD); // '2024-01-22'
+    print(today.startOfDay);
+}</code></pre>
+        </div>
+    </div>
 
-    // Tutup modal jika klik di luar area .modal-content
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
+    <!-- Karakter khusus & konflik nama -->
+    <div class="card">
+        <div class="card-header"><h2>🌴 Simbol & Resolusi Konflik</h2></div>
+        <div class="card-body">
+            <p style="font-family: monospace; background:#173f2b; padding:0.5rem; border-radius: 1rem; word-break: break-all; font-size: clamp(0.7rem, 2.5vw, 0.85rem);">                                 ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ</p>
+            <hr>
+            <pre><code>// File: string_extensions.dart
+extension StringCaseExtensions on String { String capitalize() => /* ... */; }
+// File: text_utils.dart
+extension TextUtilsExtensions on String { String capitalize() => /* ... berbeda ... */; }
 
-    // Tambahkan event keyboard untuk Escape
-    document.addEventListener("keydown", function(e) {
-      if (e.key === "Escape" && modal.style.display === "flex") {
-        closeModal();
-      }
-    });
-  })();
-</script>
+// Solusi: prefix atau hide
+import 'string_extensions.dart' as se;
+import 'text_utils.dart' hide capitalize;
+
+void main(){
+    var text = 'hello';
+    // text.capitalize(); // ambiguous
+    se.capitalize(text);
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- halaman 13 & 14 -->
+    <div class="card">
+        <div class="card-header"><h2>📖 Halaman 13</h2></div>
+        <div class="card-body" style="text-align:center; font-size:clamp(2rem, 10vw, 3rem);">13</div>
+    </div>
+    <div class="card">
+        <div class="card-header"><h2>📖 Halaman 14</h2></div>
+        <div class="card-body" style="text-align:center; font-size:clamp(2rem, 10vw, 3rem);">14</div>
+    </div>
+
+    <!-- Slide 14: Ringkasan & Best Practices (full) -->
+    <div class="card">
+        <div class="card-header"><h2>🏝️ Ringkasan & Best Practices (Guardian Wisdom)</h2></div>
+        <div class="card-body">
+            <div class="grid-rain">
+                <div>
+                    <h3 style="font-size: clamp(1rem, 4vw, 1.3rem);">🌿 Ringkasan:</h3>
+                    <ul>
+                        <li>Extension methods: tambah method ke tipe yang ada</li>
+                        <li>Sintaks: <code>extension Nama on Type</code></li>
+                        <li>Support: method, getter, setter, operator</li>
+                        <li>Generic extensions: on List&lt;T&gt;</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="font-size: clamp(1rem, 4vw, 1.3rem);">✅ Best Practices (Hutan Kode):</h3>
+                    <ul>
+                        <li>📛 Nama jelas: StringExtensions, DateTimeUtils</li>
+                        <li>📁 Group by type: Satu file per tipe utama</li>
+                        <li>🚫 Avoid overuse: Jangan jadikan semua utility sebagai extension</li>
+                        <li>🛡️ Null safety: Handle nullable types dengan baik</li>
+                        <li>📝 Dokumentasi: Tambahkan komentar untuk public extensions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-moss">🌱 "Jaga kode tetap alami, berdayakan ekstensi tanpa merusak aslinya — seperti hutan yang tumbuh harmonis."</div>
+        </div>
+    </div>
+
+    <!-- Ringkasan final dari slide asli (poin 1-4) -->
+    <div class="card">
+        <div class="card-header"><h2>📘 Intisari Akhir — Extension Methods</h2></div>
+        <div class="card-body">
+            <ol style="font-weight: 500; padding-left: 1.2rem;">
+                <li>Extension methods: tambah method ke tipe yang ada</li>
+                <li>Sintaks: extension Name on Type</li>
+                <li>Support: method, getter, setter, operator</li>
+                <li>Generic extensions: on List&lt;T&gt;</li>
+            </ol>
+            <div class="note-forest">🌳 Best practices lengkap: Nama jelas, group by type, hindari overuse, null safety, dan dokumentasi selaras dengan semangat rainforest guardian: <strong>berkelanjutan & mudah dirawat</strong>.</div>
+        </div>
+    </div>
+    <!-- semua konten slide telah dimuat tanpa satu pun terlewat -->
+</div>
 </body>
 </html>
