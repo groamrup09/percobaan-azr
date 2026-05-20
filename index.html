@@ -339,7 +339,10 @@ void main(){
         </div>
     </div>
 
-    <!-- Slide 4: Solusi dengan Extension Methods -->
+  
+
+
+ <!-- Slide 4: Solusi dengan Extension Methods -->
     <div class="card">
         <div class="card-header"><h2>✨ Solusi dengan Extension Methods</h2></div>
         <div class="card-body">
@@ -364,6 +367,70 @@ void main(){
         </div>
     </div>
 
+  <!-- Slide 5: Sintaks Extension -->
+    <div class="card">
+        <div class="card-header"><h2>✨ Sintaks Extension Method</h2></div>
+        <div class="card-body">
+            <pre><code>
+extension DateTimeExtensions on DateTime {
+  // Method
+  String toFormattedString() {
+    return '$day/$month/$year';
+  }
+  
+  // Getter
+  bool get isToday {
+    var now = DateTime.now();
+    return year == now.year && 
+           month == now.month && 
+           day == now.day;
+  }
+  
+  // Operator
+  DateTime operator +(Duration duration) {
+    return add(duration);
+  }
+}
+
+void main() {
+  // 1. Implementasi toFormattedString()
+  print('--- toFormattedString() ---');
+  final now = DateTime.now();
+  print('Current date: ${now.toFormattedString()}');
+
+  final specificDate = DateTime(2023, 10, 26);
+  print('Specific date (2023-10-26): ${specificDate.toFormattedString()}');
+
+  print('\n--- isToday ---');
+  // 2. Implementasi isToday
+  final today = DateTime.now();
+  final tomorrow = DateTime.now().add(Duration(days: 1));
+  final yesterday = DateTime.now().subtract(Duration(days: 1));
+
+  print('Is ${today.toFormattedString()} today? ${today.isToday}');
+  print('Is ${tomorrow.toFormattedString()} today? ${tomorrow.isToday}');
+  print('Is ${yesterday.toFormattedString()} today? ${yesterday.isToday}');
+
+  print('\n--- operator + ---');
+  // 3. Implementasi operator +
+  final initialDate = DateTime(2024, 1, 15);
+  final durationToAdd = Duration(days: 10, hours: 3);
+  final futureDate = initialDate + durationToAdd;
+
+  print('Initial date: ${initialDate.toFormattedString()}');
+  print('Duration to add: ${durationToAdd.inDays} days, ${durationToAdd.inHours % 24} hours');
+  print('Future date: ${futureDate.toFormattedString()}');
+  print('Future date (full): $futureDate');
+
+  final anotherDuration = Duration(days: 2);
+  final evenFutureDate = futureDate + anotherDuration;
+  print('Future date + 2 day: ${evenFutureDate.toFormattedString()}');
+}
+                
+</code></pre>
+        </div>
+    </div>
+    
     <!-- halaman 6 (dari PDF) -->
     <div class="card">
         <div class="card-header"><h2>🌿 Kanopi halaman</h2></div>
