@@ -12,78 +12,120 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
-            background: #eef2f9;
-            padding: 2rem 1rem;
-            color: #0a0c10;
+            background: radial-gradient(circle at 10% 20%, #0c2f1f, #05180e);
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
+            color: #e7f0e9;
+            padding: 2rem 1.5rem;
+            line-height: 1.5;
+            position: relative;
         }
 
-        .slide-deck {
-            max-width: 1200px;
+        /* efek dedaunan halus di background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" opacity="0.08"><path fill="%234caf50" d="M270,160 L300,120 L330,160 L300,200 L270,160Z M150,350 L190,320 L220,360 L180,390 L150,350Z M500,480 L540,440 L580,480 L540,520 L500,480Z M680,230 L710,190 L740,230 L710,270 L680,230Z M420,720 L460,680 L500,720 L460,760 L420,720Z M80,780 L120,740 L160,780 L120,820 L80,780Z M600,890 L630,860 L660,890 L630,920 L600,890Z"></path></svg>');
+            background-repeat: repeat;
+            background-size: 90px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1300px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        .slide-card {
-            background: white;
-            border-radius: 28px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        /* card rainforest style – kayu & lumut */
+        .card {
+            background: rgba(25, 45, 30, 0.85);
+            backdrop-filter: blur(3px);
+            border-radius: 2rem;
+            border: 1px solid rgba(130, 180, 90, 0.5);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(210, 240, 150, 0.2);
             overflow: hidden;
-            transition: 0.2s;
+            transition: transform 0.25s ease, box-shadow 0.3s;
         }
 
-        .slide-header {
-            background: #0b2b3b;
-            background: linear-gradient(98deg, #0b2b3b 0%, #1a4a6f 100%);
-            padding: 1.2rem 2rem;
-            color: white;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 28px 32px -16px black;
+            border-color: #9bc45a;
         }
 
-        .slide-header h2 {
+        .card-header {
+            background: linear-gradient(105deg, #1b3b2b 0%, #2c553b 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #79b345;
+            position: relative;
+        }
+
+        .card-header h2 {
             font-size: 1.7rem;
             font-weight: 600;
             letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #f3ffcf, #c0f0a0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.2);
+            display: inline-block;
         }
 
-        .slide-header .slide-meta {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-top: 6px;
+        .badge-leaf {
+            display: inline-block;
+            background: #4f7a3b;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            vertical-align: middle;
+            color: #e7ffcf;
         }
 
-        .slide-body {
+        .card-body {
             padding: 1.8rem 2rem 2.2rem;
         }
 
         pre {
-            background: #0f1722;
-            color: #eef2ff;
+            background: #0d2219;
+            border-radius: 24px;
             padding: 1.2rem;
-            border-radius: 20px;
             overflow-x: auto;
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 0.85rem;
-            line-height: 1.45;
-            margin: 1rem 0;
+            line-height: 1.5;
+            color: #d6f0cd;
+            border-left: 5px solid #7cb342;
+            box-shadow: inset 0 1px 4px #00000030, 0 4px 8px rgba(0,0,0,0.2);
+            margin: 1.2rem 0;
             white-space: pre-wrap;
             word-break: break-word;
         }
 
         code {
             font-family: 'Fira Code', monospace;
-            background: #eef2ff;
-            color: #1e293b;
-            padding: 0.2rem 0.4rem;
+            background: #2b4638;
+            padding: 0.2rem 0.5rem;
             border-radius: 12px;
+            color: #e4ffc7;
             font-size: 0.85rem;
         }
 
         pre code {
             background: transparent;
-            color: inherit;
             padding: 0;
+            color: inherit;
         }
 
         ul, ol {
@@ -93,45 +135,72 @@
 
         li {
             margin: 0.5rem 0;
+            font-weight: 500;
         }
 
-        .note-box {
-            background: #fef7e0;
-            border-left: 5px solid #f5b042;
-            padding: 0.8rem 1.2rem;
-            border-radius: 18px;
-            margin: 1rem 0;
+        .note-forest {
+            background: #1e3a2c;
+            border-left: 8px solid #b5e377;
+            padding: 1rem 1.5rem;
+            border-radius: 1.2rem;
+            margin: 1.2rem 0;
+            font-weight: 500;
+            box-shadow: 0 3px 7px rgba(0,0,0,0.2);
         }
 
-        .grid-2 {
+        .grid-rain {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 1.8rem;
         }
 
         hr {
-            margin: 1.2rem 0;
-            border-color: #ddd;
+            margin: 1rem 0;
+            border-color: #4a6f42;
         }
 
-        @media (max-width: 700px) {
-            .grid-2 {
+        @media (max-width: 750px) {
+            .grid-rain {
                 grid-template-columns: 1fr;
             }
-            .slide-body {
-                padding: 1.2rem;
+            .card-body {
+                padding: 1.3rem;
+            }
+            .card-header h2 {
+                font-size: 1.3rem;
             }
         }
 
-        .badge-slide {
-            display: inline-block;
-            background: #1976d2;
-            color: white;
-            font-size: 0.7rem;
-            border-radius: 30px;
-            padding: 0.2rem 0.8rem;
-            margin-bottom: 0.8rem;
+        /* custom scroll & highlight */
+        ::selection {
+            background: #96c24e;
+            color: #0a2417;
         }
+
+        .footer-moss {
+            background: #0f2a1d;
+            border-radius: 1.8rem;
+            padding: 1rem 1.5rem;
+            margin-top: 0.8rem;
+            border-top: 1px solid #6e9f4a;
+        }
+
+        .btn-eco {
+            font-size: 0.7rem;
+            background: #3d6b3e;
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        /* judul rainforest */
+        .header-hero {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        
+            
     </style>
 </head>
 <body>
