@@ -593,22 +593,156 @@ print(today.startOfDay); // 2026-02-20 00:00:00.000
     <div class="card">
         <div class="card-header"><h2>Konflik Nama Extension</h2></div>
         <div class="card-body">
-            <p style="font-family: monospace; background:#173f2b; padding:0.5rem; border-radius: 1rem; word-break: break-all; font-size: clamp(0.7rem, 2.5vw, 0.85rem);">                                 ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ</p>
-            <hr>
+           
             <pre><code>
-                
+// File: string_extensions.dart
+extension StringCaseExtensions on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1).toLowerCase();
+  }
+}
+
+// File: text_utils.dart
+extension TextUtilsExtensions on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1);
+  }
+}
+
+// File: main.dart (Solusi dengan prefix)
+import 'string_extensions.dart' as se;
+import 'text_utils.dart' hide capitalize;
+
+void main() {
+  var text = 'hello';
+  
+  // ✅ Menggunakan prefix untuk menghindari konflik
+  print(se.capitalize(text)); // Output: Hello (dari string_extensions.dart)
+  
+  // ✅ Atau gunakan method asli String
+  print(text.toUpperCase()); // Output: HELLO
+  
+  // ❌ Ini akan ERROR karena ambiguous (tidak tahu pilih yang mana)
+  // print(text.capitalize());
+}
             </code></pre>
         </div>
     </div>
 
     <!-- halaman 13 & 14 -->
     <div class="card">
-        <div class="card-header"><h2>📖 Halaman 13</h2></div>
-        <div class="card-body" style="text-align:center; font-size:clamp(2rem, 10vw, 3rem);">13</div>
+        <div class="card-header"><h2>Extension untuk Custom Classes</h2></div>
+       <pre>
+  class Product {
+  final String name;
+  final double price;
+  
+  Product(this.name, this.price);
+}
+
+// Extension untuk formatting double ke Rupiah
+extension DoubleRupiahFormatter on double {
+  String toRupiah() {
+    // Convert to integer to handle whole Rupiah amounts without decimals
+    final intValue = toInt();
+    
+    // Convert to string
+    String numberString = intValue.toString();
+    
+    // Add thousands separators
+    String formattedString = '';
+    int counter = 0;
+    for (int i = numberString.length - 1; i >= 0; i--) {
+      formattedString = numberString[i] + formattedString;
+      counter++;
+      if (counter % 3 == 0 && i != 0) {
+        formattedString = '.' + formattedString;
+      }
+    }
+    
+    return 'Rp$formattedString';
+  }
+}
+
+// Extension untuk Product
+extension ProductExtensions on Product {
+  // Method untuk diskon
+  Product withDiscount(double percentage) {
+    var discountedPrice = price * (1 - percentage / 100);
+    return Product(name, discountedPrice);
+  }
+  
+  // Format untuk display
+  String get displayInfo => '$name - ${price.toRupiah()}';
+  
+  // Check jika mahal
+  bool get isExpensive => price > 1000000;
+}
+
+void main(){
+  // Penggunaan
+  var laptop = Product('Laptop', 15000000);
+  var discounted = laptop.withDiscount(10);
+  print(discounted.displayInfo);  // 'Laptop - Rp13.500.000'
+  print(laptop.isExpensive);      // true
+
+  var keyboard = Product('Keyboard', 750000);
+  print(keyboard.displayInfo);
+  print(keyboard.isExpensive);
+}
+       </pre>
     </div>
     <div class="card">
-        <div class="card-header"><h2>📖 Halaman 14</h2></div>
-        <div class="card-body" style="text-align:center; font-size:clamp(2rem, 10vw, 3rem);">14</div>
+        <div class="card-header"><h2> Praktik 2 – Validator Extensions</h2></div>
+        <pre>
+// Validator extensions untuk berbagai tipe
+extension StringValidators on String {
+  bool get isEmail {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(this);
+  }
+
+  bool get isPhoneNumber {
+    return RegExp(r'^[0-9]{10,13}$').hasMatch(this);
+  }
+
+  bool get isStrongPassword {
+    return length >= 8 &&
+        contains(RegExp(r'[A-Z]')) &&
+        contains(RegExp(r'[a-z]')) &&
+        contains(RegExp(r'[0-9]'));
+  }
+
+  bool get isUrl {
+    try {
+      Uri.parse(this);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+extension IntValidators on int {
+  bool get isAdultAge => this >= 18;
+  bool get isPositive => this > 0;
+  bool get isEven => this % 2 == 0;
+  bool get isOdd => this % 2 != 0;
+}
+
+void main() {
+  // Penggunaan
+  var email = 'test@example.com';
+  var age = 25;
+  var password = 'Pass1234';
+
+  print(email.isEmail); // true
+  print(age.isAdultAge); // true
+  print(password.isStrongPassword); // true
+  print(10.isEven); // true
+}
+        </pre>
     </div>
 
     <!-- Slide 14: Ringkasan & Best Practices (full) -->
