@@ -207,7 +207,11 @@
     <div class="card">
         <div class="card-header"><h2>⚠️ Masalah Tanpa Extension Methods</h2></div>
         <div class="card-body">
-            <pre><code>// Utility class yang kurang natural
+            <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A
+// Utility class yang kurang natural
 class StringUtils {
     static String capitalize(String text) {
         if (text.isEmpty) return text;
@@ -236,7 +240,11 @@ void main(){
     <div class="card">
         <div class="card-header"><h2>✨ Solusi dengan Extension Methods</h2></div>
         <div class="card-body">
-            <pre><code>extension StringExtensions on String {
+    <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A
+    extension StringExtensions on String {
     String capitalize() {
         if (isEmpty) return this;
         return this[0].toUpperCase() + substring(1);
@@ -255,6 +263,9 @@ void main(){
     print('Reversed "hello": $reversed');
 }</code></pre>
         </div>
+        <button class="btn" onclick="openModal('26747f4d6cbd5c672154478070e37a29')">
+        Lihat Kode
+      </button>
     </div>
 
   <!-- Slide 5: Sintaks Extension -->
@@ -262,6 +273,9 @@ void main(){
         <div class="card-header"><h2>✨ Sintaks Extension Method</h2></div>
         <div class="card-body">
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A
 extension DateTimeExtensions on DateTime {
   // Method
   String toFormattedString() {
@@ -319,6 +333,10 @@ void main() {
                 
 </code></pre>
         </div>
+         <button class="btn" onclick="openModal('64c817f6849ce3aa9e012c99bd8d0d6a')">
+        Lihat Kode
+      </button>
+
     </div>
     
   
@@ -349,6 +367,9 @@ void main(){
         <div class="card-header"><h2>🛡️ Null Safety Extension (Rainforest Resilience)</h2></div>
         <div class="card-body">
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A               
 extension NullableStringExtensions on String? {
 // Safe access untuk nullable string
 String orEmpty() => this ?? '';
@@ -374,6 +395,9 @@ print(name.withDefault('Guest')); // 'Guest'
         <div class="card-header"><h2>💰 Praktik 1 - Utilities untuk Dart Types</h2></div>
         <div class="card-body">
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                
 extension NumberExtensions on num {
   // Format ke Rupiah
   String toRupiah() {
@@ -414,6 +438,9 @@ print(2.power(3));         // 8
         <div class="card-header"><h2>🔁 Generic Extensions pada List&lt;T&gt;</h2></div>
         <div class="card-body">
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                
 extension ListExtensions<T> on List<T> {
   // Safe get dengan default
   T? getOrNull(int index) {
@@ -457,6 +484,9 @@ print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
         <div class="card-header"><h2>🍄 Extension Tanpa Nama (Private scope)</h2></div>
         <div class="card-body">
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                
 // File: date_utils.dart
 extension on DateTime {
 String get toYYYYMMDD {
@@ -485,6 +515,9 @@ print(today.startOfDay); // 2026-02-20 00:00:00.000
         <div class="card-body">
            
             <pre><code>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A               
 // File: string_extensions.dart
 extension StringCaseExtensions on String {
   String capitalize() {
@@ -525,6 +558,9 @@ void main() {
     <div class="card">
         <div class="card-header"><h2>Extension untuk Custom Classes</h2></div>
        <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A         
   class Product {
   final String name;
   final double price;
@@ -587,6 +623,9 @@ void main(){
     <div class="card">
         <div class="card-header"><h2> Praktik 2 – Validator Extensions</h2></div>
         <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A            
 // Validator extensions untuk berbagai tipe
 extension StringValidators on String {
   bool get isEmail {
