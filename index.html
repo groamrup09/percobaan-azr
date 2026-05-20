@@ -1,555 +1,428 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide 9 - Extension Methods (Lengkap)</title>
-    <style>
-        * {
-            margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #d0f0e8 0%, #b8e0d4 100%);
-    padding: 2rem 1rem;
-    color: #064e3b;
-}
-
-.slide-deck {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.slide-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(2px);
-    border-radius: 28px;
-    box-shadow: 0 12px 28px rgba(0, 100, 80, 0.15);
-    overflow: hidden;
-    transition: 0.2s;
-    border: 1px solid rgba(20, 150, 130, 0.3);
-}
-
-.slide-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 32px rgba(0, 120, 100, 0.2);
-    border-color: #2dd4bf;
-}
-
-.slide-header {
-    background: linear-gradient(98deg, #0f5e5a 0%, #1d8a78 100%);
-    padding: 1.2rem 2rem;
-    color: white;
-}
-
-.slide-header h2 {
-    font-size: 1.7rem;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.slide-header .slide-meta {
-    font-size: 0.8rem;
-    opacity: 0.9;
-    margin-top: 6px;
-}
-
-.slide-body {
-    padding: 1.8rem 2rem 2.2rem;
-}
-
-pre {
-    background: #053b30;
-    color: #ccfbf1;
-    padding: 1.2rem;
-    border-radius: 20px;
-    overflow-x: auto;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 0.85rem;
-    line-height: 1.45;
-    margin: 1rem 0;
-    white-space: pre-wrap;
-    word-break: break-word;
-    border-left: 4px solid #2dd4bf;
-}
-
-code {
-    font-family: 'Fira Code', monospace;
-    background: #ccfbf1;
-    color: #115e59;
-    padding: 0.2rem 0.4rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-}
-
-pre code {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-}
-
-ul, ol {
-    padding-left: 1.6rem;
-    margin: 1rem 0;
-}
-
-li {
-    margin: 0.5rem 0;
-}
-
-.note-box {
-    background: #ccfbf1;
-    border-left: 5px solid #14b8a6;
-    padding: 0.8rem 1.2rem;
-    border-radius: 18px;
-    margin: 1rem 0;
-    color: #064e3b;
-}
-
-.grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-hr {
-    margin: 1.2rem 0;
-    border-color: #99f6e4;
-}
-
-@media (max-width: 700px) {
-    .grid-2 {
-        grid-template-columns: 1fr;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dart OOP · Constructor, Enkapsulasi, Getter/Setter | Demo RekeningBank</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-    .slide-body {
-        padding: 1.2rem;
-    }
-}
 
-.badge-slide {
-    display: inline-block;
-    background: #14b8a6;
-    color: white;
-    font-size: 0.7rem;
-    border-radius: 30px;
-    padding: 0.2rem 0.8rem;
-    margin-bottom: 0.8rem;
-}
-    </style>
+    body {
+      background: linear-gradient(145deg, #eef2f5 0%, #dce4ec 100%);
+      font-family: 'Inter', system-ui, 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: clamp(1rem, 4vw, 2.5rem);
+      color: #0a2e2c;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* CARD utama */
+    .card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(0px);
+      border-radius: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 40, 30, 0.2);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s;
+      border: 1px solid rgba(60, 160, 140, 0.25);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 28px 36px -16px rgba(20, 100, 80, 0.3);
+    }
+
+    .card-header {
+      background: linear-gradient(105deg, #136b62 0%, #1f8a7a 100%);
+      padding: 1.1rem 1.8rem;
+    }
+
+    .card-header h2 {
+      color: white;
+      font-size: clamp(1.3rem, 5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #ffdd99;
+      color: #136b62;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+    }
+
+    .card-body {
+      padding: clamp(1.2rem, 3vw, 2rem);
+    }
+
+    pre {
+      background: #0b2d27;
+      color: #d4fcf0;
+      padding: 1.2rem;
+      border-radius: 1.2rem;
+      overflow-x: auto;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      tab-size: 2;
+      scrollbar-width: thin;
+      max-height: 480px;
+    }
+
+    @media (max-width: 680px) {
+      pre {
+        font-size: 0.7rem;
+        padding: 1rem;
+      }
+    }
+
+    code, .inline-code {
+      font-family: 'Fira Code', monospace;
+      background: #d5f3ec;
+      color: #0b5e55;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+    }
+
+    footer {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.4rem 1.8rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+    }
+
+    footer h2 {
+      color: #146b62;
+      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+    }
+
+    /* TOMBOL DESAIN RESPONSIF TANPA MENGUBAH ISI */
+    .btn-group {
+      margin-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: linear-gradient(100deg, #1f8a7a, #136b62);
+      border: none;
+      padding: 0.75rem 1.7rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(100deg, #219b89, #117a6a);
+      box-shadow: 0 12px 22px -8px rgba(15, 90, 75, 0.5);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      transition: 0.05s;
+    }
+
+    /* modal tanpa lag, performa tinggi */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 20, 16, 0.85);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 0;
+      border-radius: 2rem;
+      width: 90%;
+      max-width: 1100px;
+      height: 85vh;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 45px rgba(0, 0, 0, 0.3);
+      animation: modalFadeIn 0.2s ease-out;
+      border: 1px solid #8dd0c0;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .close {
+      color: #1b6b61;
+      align-self: flex-end;
+      font-size: 2rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem 0 0;
+      cursor: pointer;
+      transition: 0.1s;
+      line-height: 1;
+    }
+
+    .close:hover {
+      color: #bc5a2c;
+      transform: scale(1.05);
+    }
+
+    .modal-content iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      border-bottom-left-radius: 2rem;
+      border-bottom-right-radius: 2rem;
+      background: #fff;
+    }
+
+    /* mobile smooth */
+    @media (max-width: 640px) {
+      .btn {
+        padding: 0.6rem 1.3rem;
+        font-size: 0.8rem;
+        width: auto;
+      }
+      .modal-content {
+        width: 98%;
+        height: 90vh;
+        border-radius: 1.5rem;
+      }
+      .close {
+        font-size: 1.8rem;
+        padding-right: 0.8rem;
+        padding-top: 0.4rem;
+      }
+      .card-body {
+        padding: 1rem;
+      }
+      footer {
+        padding: 1rem;
+      }
+    }
+
+    /* scrollbar soft */
+    pre::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    pre::-webkit-scrollbar-track {
+      background: #1f463e;
+      border-radius: 10px;
+    }
+    pre::-webkit-scrollbar-thumb {
+      background: #6abfaa;
+      border-radius: 10px;
+    }
+
+    /* teks kesimpulan rapih */
+    footer p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #1e4a44;
+    }
+
+    .demo-note {
+      background: #e0f7f2;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1.2rem;
+      margin-top: 0.8rem;
+      font-weight: 500;
+      color: #0c5b4f;
+    }
+  </style>
 </head>
 <body>
-<div class="slide-deck">
 
-    <!-- ========================================= -->
-    <!-- SLIDE 1 (halaman judul) : SESI 9   -->
-    <!-- ========================================= -->
-    <div class="slide-card">
-        <div class="slide-header">
-            <h2>SESI 9: Extension Methods</h2>
-            <div class="slide-meta">Durasi: 200 menit | Total Slide: 14</div>
-        </div>
-        <div class="slide-body">
-            <p style="font-size:1.1rem;">🎯 Materi lanjutan Dart: Menambahkan fungsi ke tipe yang sudah ada tanpa mengubah source asli.</p>
-        </div>
+<div class="container">
+  <!-- Kartu Constructor Berparameter + Named Constructor -->
+  <div class="card">
+    <div class="card-header">
+      <h2>🏦 Dart Constructor & Enkapsulasi <span class="badge">RekeningBank Demo</span></h2>
     </div>
+    <div class="card-body">
+      <pre>
+class RekeningBank {
+  String _nomorRekening;
+  double _saldo;
 
-    <!-- SLIDE asli : Slide 1 (Review Builder Pattern) -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 1: Review Sesi 8 – Builder Pattern</h2></div>
-        <div class="slide-body">
-            <ul>
-                <li>Builder Pattern untuk objek kompleks</li>
-                <li>Method chaining untuk fluent API</li>
-                <li>Contoh: <code>Pizza.builder().size('large').addTopping('cheese').build()</code></li>
-                <li>Contoh cepat:</li>
-            </ul>
-            <pre><code>class ConfigBuilder {
-    ConfigBuilder host(String h) { return this; }
-    ConfigBuilder port(int p) { return this; }
-    Config build() { return Config(); }
-}</code></pre>
-        </div>
-    </div>
+  // Constructor Berparameter
+  RekeningBank(this._nomorRekening, this._saldo);
 
-    <!-- Slide 2: Pengantar Extension Methods -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 2: Pengantar Extension Methods</h2></div>
-        <div class="slide-body">
-            <ul>
-                <li>Apa itu? Fitur untuk menambahkan metode baru ke tipe yang sudah ada</li>
-                <li>Tanpa modifikasi kode asli</li>
-                <li>Tersedia sejak Dart 2.7</li>
-                <li>Analog: Memberikan kemampuan baru tanpa mengubah benda aslinya</li>
-            </ul>
-        </div>
-    </div>
+  // Named Constructor: RekeningBank.tanpaSaldo()
+  RekeningBank.tanpaSaldo(String nomor)
+      : _nomorRekening = nomor,
+        _saldo = 0.0;
 
-    <!-- Slide 3: Masalah Tanpa Extension Methods -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 3: Masalah Tanpa Extension Methods</h2></div>
-        <div class="slide-body">
-            <pre><code>// Utility class yang kurang natural
-class StringUtils {
-    static String capitalize(String text) {
-        if (text.isEmpty) return text;
-        return text[0].toUpperCase() + text.substring(1);
+  // Getter & Setter
+  String get nomorRekening => _nomorRekening;
+  set nomorRekening(String value) {
+    if (value.isNotEmpty) _nomorRekening = value;
+  }
+
+  double get saldo => _saldo;
+
+  void deposit(double jml) {
+    if (jml > 0) {
+      _saldo += jml;
+      print('Deposit Rp $jml Berhasil.');
     }
-    static bool isEmail(String text) { return text.contains('@'); }
-}
-void main(){
-    // Penggunaan kurang natural
-    var name = 'john';
-    var capitalized = StringUtils.capitalize(name); // 'John'
-    var isEmail = StringUtils.isEmail('test@mail.com');
-    print('Original name: $name');
-    print('Capitalized name: $capitalized');
-    print('Is "test@mail.com" an email? $isEmail');
-}</code></pre>
-        </div>
-<button class="btn" onclick="openModal('cc99fe36bf9f6ebaec388ffee3dc6bab')">
-        Lihat Kode
-</button>
-    </div>
+  }
 
-    <!-- Slide 4: Solusi dengan Extension Methods -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 4: Solusi dengan Extension Methods</h2></div>
-        <div class="slide-body">
-            <pre><code>// Extension method untuk String
-extension StringExtensions on String {
-    String capitalize() {
-        if (isEmpty) return this;
-        return this[0].toUpperCase() + substring(1);
+  void tarik(double jml) {
+    if (jml > 0 && _saldo >= jml) {
+      _saldo -= jml;
+      print('Tarik Rp $jml Berhasil.');
+    } else {
+      print('Gagal: Saldo tidak cukup atau input tidak valid.');
     }
-    bool get isEmail => contains('@');
-    String reverse() {
-        return split('').reversed.join();
-    }
-}
-void main(){
-    // Penggunaan lebih natural
-    var name = 'john';
-    var capitalized = name.capitalize(); // 'John'
-    var isEmail = 'test@mail.com'.isEmail; // true
-    var reversed = 'hello'.reverse(); // 'olleh'
-    print('Original name: $name');
-    print('Capitalized name: $capitalized');
-    print('Is "test@mail.com" an email? $isEmail');
-    print('Reversed "hello": $reversed');
-}</code></pre>
-        </div>
-    </div>
+  }
 
-    <!-- Slide 5 (hanya berisi angka 6? Tapi slide asli hal 6 gambar angka 6? asli PDF ada halaman "6" saja. Saya pertahankan konten sesuai file: "6" tidak ada deskripsi tapi di file di slide 6 sesudahnya. Saya akan menampilkan sesuai: halaman 6 hanya label "6" seperti aslinya) -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>[Halaman 6]</h2></div>
-        <div class="slide-body">
-            <p style="text-align:center; font-size: 2rem;">6</p>
-            <p style="text-align:center;">— (pemisah slide) —</p>
-        </div>
-    </div>
-
-    <!-- Slide (berikutnya di file: setelah halaman 6 masuk ke slide 7: Built-in types dll) 
-         Namun di konten file: setelah "6" masuk ke "1. Built-in types: String, int, double, List, Map, etc. 2. Custom classes ..." slide tsb di PDF tanpa nomor, tetapi saya satukan sesuai konten asli -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Extension untuk Built-in & Custom + Generic</h2></div>
-        <div class="slide-body">
-            <p><strong>Tipe yang didukung:</strong></p>
-            <ul>
-                <li>Built-in types: String, int, double, List, Map, etc.</li>
-                <li>Custom classes: Kelas buatan sendiri</li>
-                <li>Generic types: List&lt;T&gt;, Map&lt;K, V&gt;</li>
-                <li>Nullable types: String?, int?</li>
-            </ul>
-            <pre><code>// Extension untuk List&lt;int&gt;
-extension IntListExtensions on List&lt;int&gt; {
-    int get sum => fold(0, (total, item) => total + item);
-    double get average => isEmpty ? 0 : sum / length;
-}
-void main(){
-    var numbers = [1, 2, 3, 4, 5];
-    print(numbers.sum); // 15
-    print(numbers.average); // 3.0
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Slide 7: Null Safety (di PDF ada tulisan Slide 7: Extension untuk Null Safety) -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 7: Extension untuk Null Safety</h2></div>
-        <div class="slide-body">
-            <pre><code>extension NullableStringExtensions on String? {
-    // Safe access untuk nullable string
-    String orEmpty() => this ?? '';
-    bool get isNullOrEmpty => this == null || this!.isEmpty;
-    bool get isNotNullOrEmpty => !isNullOrEmpty;
-    String withDefault(String defaultValue) => this ?? defaultValue;
+  void cekSaldo() {
+    print('Rekening: $_nomorRekening | Saldo: Rp $_saldo');
+  }
 }
 
-void main(){
-    // Penggunaan
-    String? name;
-    print(name.isNullOrEmpty); // true
-    print(name.withDefault('Guest')); // 'Guest'
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Slide 8: Praktik 1 - Utilities untuk Dart Types (NumberExtensions) -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 8: Praktik 1 - Utilities untuk Dart Types</h2></div>
-        <div class="slide-body">
-            <pre><code>extension NumberExtensions on num {
-    // Format ke Rupiah
-    String toRupiah() {
-        return 'Rp${toStringAsFixed(0).replaceAllMapped(
-            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (match) => '${match[1]}.',
-        )}';
-    }
-    // Check jika dalam range
-    bool isBetween(num min, num max) {
-        return this >= min && this <= max;
-    }
-    // Pangkat
-    num power(int exponent) {
-        var result = this;
-        for (var i = 1; i < exponent; i++) {
-            result *= this;
-        }
-        return result;
-    }
-}
-void main(){
-    // Penggunaan
-    var price = 1500000;
-    print(price.toRupiah()); // 'Rp1.500.000'
-    print(5.isBetween(1, 10)); // true
-    print(2.power(3)); // 8
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Slide 9: Generic Extensions -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 9: Generic Extensions</h2></div>
-        <div class="slide-body">
-            <pre><code>// Extension untuk List&lt;T&gt; generic
-extension ListExtensions&lt;T&gt; on List&lt;T&gt; {
-    // Safe get dengan default
-    T? getOrNull(int index) {
-        if (index < 0 || index >= length) return null;
-        return this[index];
-    }
-    // Split list menjadi chunks
-    List&lt;List&lt;T&gt;&gt; chunk(int size) {
-        var chunks = &lt;List&lt;T&gt;&gt;[];
-        for (var i = 0; i < length; i += size) {
-            chunks.add(sublist(i, i + size > length ? length : i + size));
-        }
-        return chunks;
-    }
-    // Distinct items
-    List&lt;T&gt; distinct() {
-        var result = &lt;T&gt;[];
-        for (var item in this) {
-            if (!result.contains(item)) {
-                result.add(item);
-            }
-        }
-        return result;
-    }
-}
-void main(){
-    // Penggunaan
-    var numbers = [1, 2, 3, 4, 5, 6, 7];
-    print(numbers.chunk(3)); // [[1, 2, 3], [4, 5, 6], [7]]
-    print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Slide berikutnya: Extension tanpa nama (hanya untuk library yang sama) -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Extension Tanpa Nama (library-private)</h2></div>
-        <div class="slide-body">
-            <pre><code>// File: date_utils.dart
-extension on DateTime {
-    String get toYYYYMMDD {
-        return '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
-    }
-    DateTime get startOfDay {
-        return DateTime(year, month, day);
-    }
-}
 void main() {
-    // Hanya bisa diakses di file ini
-    var today = DateTime.now();
-    print(today.toYYYYMMDD); // '2024-01-22'
-    print(today.startOfDay); // 2026-02-20 00:00:00.000
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Halaman yang berisi karakter aneh (garbage) namun di file asli ada halaman dengan simbol aneh. Saya sertakan persis teks dari file: 
-         "                                 ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ" 
-         lalu setelah itu ada kode conflict.
-         Saya menampilkan teks asli agar tidak ada yang terlewat. -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Raw konten (karakter khusus dari PDF)</h2></div>
-        <div class="slide-body">
-            <p style="font-family: monospace; font-size:0.85rem; word-break:break-all;">
-                                                 ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ
-            </p>
-            <hr>
-            <pre><code>// File: string_extensions.dart
-extension StringCaseExtensions on String {
-    String capitalize() => /* ... */;
+  print('--- TRANSAKSI PERTAMA ---');
+  var rekeningSaya = RekeningBank('1234-5678-90', 5000000);
+  rekeningSaya.cekSaldo();
+  
+  print('\n--- MELAKUKAN PENARIKAN ---');
+  rekeningSaya.tarik(1000000);
+  rekeningSaya.cekSaldo();
 }
-
-// File: text_utils.dart
-extension TextUtilsExtensions on String {
-    String capitalize() => /* ... berbeda ... */;
-}
-
-// Solusi: Import dengan prefix atau show/hide
-import 'string_extensions.dart' as se;
-import 'text_utils.dart' hide capitalize;
-
-void main(){
-    // Atau pilih salah satu
-    var text = 'hello';
-    // text.capitalize(); // ERROR: ambiguous
-    se.capitalize(text); // Gunakan dengan prefix
-}</code></pre>
-        </div>
-    </div>
-
-    <!-- Halaman berikutnya: hanya nomor 13 dan 14 sesuai file, ada halaman "13" dan "14" -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Halaman 13</h2></div>
-        <div class="slide-body"><p style="font-size:2rem; text-align:center;">13</p></div>
-    </div>
-    <div class="slide-card">
-        <div class="slide-header"><h2>Halaman 14</h2></div>
-        <div class="slide-body"><p style="font-size:2rem; text-align:center;">14</p></div>
-    </div>
-
-    <!-- Slide 14: Ringkasan & Best Practices (konten dari slide 14 di file) 
-         karena file ada dua kali ringkasan? Di file pada akhir terdapat slide 14: Ringkasan dan Best Practices. Saya salin persis -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Slide 14: Ringkasan & Best Practices</h2></div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div>
-                    <h3>📌 Ringkasan:</h3>
-                    <ul>
-                        <li>Extension methods: tambah method ke tipe yang ada</li>
-                        <li>Sintaks: extension Name on Type</li>
-                        <li>Support: method, getter, setter, operator</li>
-                        <li>Generic extensions: on List&lt;T&gt;</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>✅ Best Practices:</h3>
-                    <ul>
-                        <li>Nama jelas: StringExtensions, DateTimeUtils</li>
-                        <li>Group by type: Satu file per tipe utama</li>
-                        <li>Avoid overuse: Jangan jadikan semua utility sebagai extension</li>
-                        <li>Null safety: Handle nullable types dengan baik</li>
-                        <li>Dokumentasi: Tambahkan komentar untuk public extensions</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="note-box">
-                ⭐ <strong>Ringkasan tambahan dari slide:</strong> Extension methods: tambah method ke tipe yang ada, sintaks extension Name on Type, support method, getter, setter, operator, generic extensions: on List&lt;T&gt;.
-            </div>
-        </div>
-    </div>
-
-    <!-- Terakhir di file slide terdapat : 
-    "## Slide 14: Ringkasan & Best Practices
-
-## Ringkasan:
-
-1. Extension methods: tambah method ke tipe yang ada
-
-2. Sintaks: extension Name on Type
-
-3. Support: method, getter, setter, operator
-
-4. Generic extensions: on List<T>"
-    
-    Namun karena sudah diatas, saya tetap melampirkan apa yang persis di file, tidak boleh terlewat. Maka saya buat blok capture lengkap sesuai susunan asli terakhir.
-    -->
-    <div class="slide-card">
-        <div class="slide-header"><h2>Final Ringkasan (dari slide asli)</h2></div>
-        <div class="slide-body">
-            <p><strong>Ringkasan:</strong></p>
-            <ol>
-                <li>Extension methods: tambah method ke tipe yang ada</li>
-                <li>Sintaks: extension Name on Type</li>
-                <li>Support: method, getter, setter, operator</li>
-                <li>Generic extensions: on List&lt;T&gt;</li>
-            </ol>
-            <p><strong>Best Practices (lengkap):</strong></p>
-            <ul>
-                <li>Nama jelas: StringExtensions, DateTimeUtils</li>
-                <li>Group by type: Satu file per tipe utama</li>
-                <li>Avoid overuse: Jangan jadikan semua utility sebagai extension</li>
-                <li>Null safety: Handle nullable types dengan baik</li>
-                <li>Dokumentasi: Tambahkan komentar untuk public extensions</li>
-            </ul>
-            <div class="note-box">📄 Berdasarkan file: slide-9.pdf halaman 14 (total 14 slide). Semua konten dari awal hingga akhir telah disajikan tanpa pengurangan.</div>
-        </div>
-    </div>
-
-    <!-- Tidak ada yang terlewat: di file juga ada bagian "Slide 14: Ringkasan & Best Practices" yang memuat ringkasan duplikat, semua sudah tercakup.
-         Bahkan bagian "1. Extension methods: tambah method ke tipe yang ada 2. Sintaks: extension Name on Type ..." dan juga praktik. 
-         Selesai -->
-</div>
-    
-  <!-- MODAL DINAMIS (Cukup Satu Saja) -->
-  <div id="dynamicModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <iframe id="modalIframe" src=""></iframe>
+      </pre>
+      <div class="btn-group">
+        <button class="btn" onclick="openModal('a9c8ab069ebb9a3ec290ddb07e3a044e')">
+          ▶ Jalankan & Lihat Kode
+        </button>
+      </div>
+      <div class="demo-note">
+        💡 <strong>Catatan:</strong> Constructor berparameter + named constructor (tanpa saldo) + enkapsulasi dengan getter/saldo.
+      </div>
     </div>
   </div>
 
-  <script>
-    function openModal(gistId) {
-      const modal = document.getElementById("dynamicModal");
-      const iframe = document.getElementById("modalIframe");
+  <!-- footer kesimpulan asli (tidak diubah) -->
+  <footer>
+    <h2>📌 Kesimpulan</h2>
+    <pre style="background: transparent; color:#1a4e46; padding:0; box-shadow: none; border-left: none;">
+<p style="font-family: inherit; font-size: 1rem;">
+1. Dart memiliki berbagai jenis constructor untuk fleksibilitas objek.
 
-      // Load link secara otomatis saat diklik
-      iframe.src = `https://dartpad.dev/embed-dart.html?id=${gistId}&null_safety=true&run=true&theme=light`;
-      modal.style.display = "block";
-      document.body.style.overflow = "hidden"; // Biar ga bisa scroll saat modal buka
-    }
+2. Enkapsulasi melindungi data dengan menggunakan private field (prefix underscore).
 
-    function closeModal() {
-      const modal = document.getElementById("dynamicModal");
-      const iframe = document.getElementById("modalIframe");
+3. Getter & setter memberikan kontrol akses yang aman terhadap data private
+</p>
+     </pre>
+  </footer>
+</div>
 
+<!-- MODAL RESPONSIF dengan performa ringan -->
+<div id="dynamicModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe id="modalIframe" title="DartPad Demo" loading="lazy" srcdoc=""></iframe>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Optimasi: memastikan tidak ada lag, dan iframe dimuat dengan baik
+    const modal = document.getElementById("dynamicModal");
+    const iframe = document.getElementById("modalIframe");
+    let currentGist = '';
+
+    window.openModal = function(gistId) {
+      if (!gistId) return;
+      currentGist = gistId;
+      // Gunakan srcdoc kosong dulu biar reset, lalu atur src setelah modal ditampilkan
+      iframe.srcdoc = "";
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      
+      // Timeout tipis biar transisi mulus, hindari lag DOM
+      setTimeout(() => {
+        if (currentGist === gistId) {
+          iframe.src = `https://dartpad.dev/embed-dart.html?id=${gistId}&null_safety=true&run=true&theme=light`;
+        }
+      }, 20);
+    };
+
+    window.closeModal = function() {
       modal.style.display = "none";
-      iframe.src = ""; // Bersihkan iframe biar ga berat
+      iframe.src = "";          // bersihkan resource biar ringan
+      iframe.srcdoc = "";
       document.body.style.overflow = "auto";
-    }
+    };
 
-    // Klik di luar modal untuk tutup
-    window.onclick = function (event) {
-      const modal = document.getElementById("dynamicModal");
-      if (event.target == modal) closeModal();
-    }
-  </script>
-    
+    // Tutup modal jika klik di luar area .modal-content
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Tambahkan event keyboard untuk Escape
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        closeModal();
+      }
+    });
+  })();
+</script>
 </body>
 </html>
