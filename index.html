@@ -532,8 +532,8 @@ print(today.startOfDay); // 2026-02-20 00:00:00.000
             <pre><code>
 // Nama: Azriel Miracle Yuandre
 // Nim: 251410024
-// Kelas: SI2A               
-// File: string_extensions.dart
+// Kelas: SI2A
+
 extension StringCaseExtensions on String {
   String capitalize() {
     if (isEmpty) return this;
@@ -541,32 +541,23 @@ extension StringCaseExtensions on String {
   }
 }
 
-// File: text_utils.dart
 extension TextUtilsExtensions on String {
-  String capitalize() {
+  String capitalizeText() {
     if (isEmpty) return this;
     return this[0].toUpperCase() + substring(1);
   }
 }
 
-// File: main.dart (Solusi dengan prefix)
-import 'string_extensions.dart' as se;
-import 'text_utils.dart' hide capitalize;
-
 void main() {
   var text = 'hello';
-  
-  // ✅ Menggunakan prefix untuk menghindari konflik
-  print(se.capitalize(text)); // Output: Hello (dari string_extensions.dart)
-  
-  // ✅ Atau gunakan method asli String
-  print(text.toUpperCase()); // Output: HELLO
-  
-  // ❌ Ini akan ERROR karena ambiguous (tidak tahu pilih yang mana)
-  // print(text.capitalize());
+  print(StringCaseExtensions(text).capitalize());     // Output: Hello
+  print(TextUtilsExtensions(text).capitalizeText());  // Output: Hello
 }
             </code></pre>
         </div>
+        <button class="btn" onclick="openModal('0e399f40c341824369a3db459333ccfd')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- halaman 13 & 14 -->
@@ -634,6 +625,9 @@ void main(){
   print(keyboard.isExpensive);
 }
        </pre>
+        <button class="btn" onclick="openModal('f3a6ae4b394b29e0c5ed612692847210')">
+        Lihat Kode
+      </button>
     </div>
     <div class="card">
         <div class="card-header"><h2> Praktik 2 – Validator Extensions</h2></div>
@@ -687,6 +681,9 @@ void main() {
   print(10.isEven); // true
 }
         </pre>
+         <button class="btn" onclick="openModal('7f8efbe97564fbf465253850a2d84fbc')">
+        Lihat Kode
+      </button>
     </div>
 
     <!-- Slide 14: Ringkasan & Best Practices (full) -->
