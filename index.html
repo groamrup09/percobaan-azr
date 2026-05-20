@@ -431,12 +431,7 @@ void main() {
         </div>
     </div>
     
-    <!-- halaman 6 (dari PDF) -->
-    <div class="card">
-        <div class="card-header"><h2>🌿 Kanopi halaman</h2></div>
-        <div class="card-body" style="text-align:center; font-size: clamp(2rem, 8vw, 3rem); padding: 1rem;">6</div>
-    </div>
-
+  
     <!-- Tipe yang didukung + contoh IntListExtensions -->
     <div class="card">
         <div class="card-header"><h2>🍃 Tipe yang Didukung Extension</h2></div>
@@ -463,18 +458,24 @@ void main(){
     <div class="card">
         <div class="card-header"><h2>🛡️ Null Safety Extension (Rainforest Resilience)</h2></div>
         <div class="card-body">
-            <pre><code>extension NullableStringExtensions on String? {
-    String orEmpty() => this ?? '';
-    bool get isNullOrEmpty => this == null || this!.isEmpty;
-    bool get isNotNullOrEmpty => !isNullOrEmpty;
-    String withDefault(String defaultValue) => this ?? defaultValue;
+            <pre><code>
+extension NullableStringExtensions on String? {
+// Safe access untuk nullable string
+String orEmpty() => this ?? '';
+bool get isNullOrEmpty => this == null || this!.isEmpty;
+bool get isNotNullOrEmpty => !isNullOrEmpty;
+String withDefault(String defaultValue) => this ?? defaultValue;
+}
+void main(){
+// Penggunaan
+String? name;
+print(name.orEmpty()); // ''
+print(name.isNullOrEmpty); // true
+print(name.isNotNullOrEmpty); // false
+print(name.withDefault('Guest')); // 'Guest'
 }
 
-void main(){
-    String? name;
-    print(name.isNullOrEmpty); // true
-    print(name.withDefault('Guest')); // 'Guest'
-}</code></pre>
+            </code></pre>
         </div>
     </div>
 
@@ -482,26 +483,39 @@ void main(){
     <div class="card">
         <div class="card-header"><h2>💰 Praktik 1 - Utilities untuk Dart Types</h2></div>
         <div class="card-body">
-            <pre><code>extension NumberExtensions on num {
-    String toRupiah() {
-        return 'Rp${toStringAsFixed(0).replaceAllMapped(
-            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-            (match) => '${match[1]}.',
-        )}';
+            <pre><code>
+extension NumberExtensions on num {
+  // Format ke Rupiah
+  String toRupiah() {
+    return 'Rp${toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (match) => '${match[1]}.',
+    )}';
+  }
+  
+  // Check jika dalam range
+  bool isBetween(num min, num max) {
+    return this >= min && this <= max;
+  }
+  
+  // Pangkat
+  num power(int exponent) {
+    var result = this;
+    for (var i = 1; i < exponent; i++) {
+      result *= this;
     }
-    bool isBetween(num min, num max) => this >= min && this <= max;
-    num power(int exponent) {
-        var result = this;
-        for (var i = 1; i < exponent; i++) result *= this;
-        return result;
-    }
+    return result;
+  }
 }
+
 void main(){
-    var price = 1500000;
-    print(price.toRupiah()); // Rp1.500.000
-    print(5.isBetween(1, 10)); // true
-    print(2.power(3)); // 8
-}</code></pre>
+// Penggunaan
+var price = 1500000;
+print(price.toRupiah());  // 'Rp1.500.000'
+print(5.isBetween(1, 10)); // true
+print(2.power(3));         // 8
+}
+            </code></pre>
         </div>
     </div>
 
@@ -509,26 +523,42 @@ void main(){
     <div class="card">
         <div class="card-header"><h2>🔁 Generic Extensions pada List&lt;T&gt;</h2></div>
         <div class="card-body">
-            <pre><code>extension ListExtensions&lt;T&gt; on List&lt;T&gt; {
-    T? getOrNull(int index) => (index < 0 || index >= length) ? null : this[index];
-    List&lt;List&lt;T&gt;&gt; chunk(int size) {
-        var chunks = &lt;List&lt;T&gt;&gt;[];
-        for (var i = 0; i &lt; length; i += size) {
-            chunks.add(sublist(i, i + size > length ? length : i + size));
-        }
-        return chunks;
+            <pre><code>
+extension ListExtensions<T> on List<T> {
+  // Safe get dengan default
+  T? getOrNull(int index) {
+    if (index < 0 || index >= length) return null;
+    return this[index];
+  }
+  
+  // Split list menjadi chunks
+  List<List<T>> chunk(int size) {
+    var chunks = <List<T>>[];
+    for (var i = 0; i < length; i += size) {
+      chunks.add(sublist(i, i + size > length ? length : i + size));
     }
-    List&lt;T&gt; distinct() {
-        var result = &lt;T&gt;[];
-        for (var item in this) if (!result.contains(item)) result.add(item);
-        return result;
+    return chunks;
+  }
+  
+  // Distinct items
+  List<T> distinct() {
+    var result = <T>[];
+    for (var item in this) {
+      if (!result.contains(item)) {
+        result.add(item);
+      }
     }
+    return result;
+  }
 }
+
 void main(){
-    var numbers = [1, 2, 3, 4, 5, 6, 7];
-    print(numbers.chunk(3)); // [[1, 2, 3], [4, 5, 6], [7]]
-    print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
-}</code></pre>
+// Penggunaan
+var numbers = [1, 2, 3, 4, 5, 6, 7];
+print(numbers.chunk(3));  // [[1, 2, 3], [4, 5, 6], [7]]
+print([1, 2, 2, 3, 3, 3].distinct()); // [1, 2, 3]
+}
+            </code></pre>
         </div>
     </div>
 
@@ -536,39 +566,38 @@ void main(){
     <div class="card">
         <div class="card-header"><h2>🍄 Extension Tanpa Nama (Private scope)</h2></div>
         <div class="card-body">
-            <pre><code>// File: date_utils.dart
+            <pre><code>
+// File: date_utils.dart
 extension on DateTime {
-    String get toYYYYMMDD => '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
-    DateTime get startOfDay => DateTime(year, month, day);
+String get toYYYYMMDD {
+return '$year-${month.toString().padLeft(2,
+'0')}-${day.toString().padLeft(2,
+'0')}';
+}
+DateTime get startOfDay {
+return DateTime(year, month, day);
+}
 }
 void main() {
-    var today = DateTime.now();
-    print(today.toYYYYMMDD); // '2024-01-22'
-    print(today.startOfDay);
-}</code></pre>
+// Hanya bisa diakses di file ini
+var today = DateTime.now();
+print(today.toYYYYMMDD); // '2024-01-22'
+print(today.startOfDay); // 2026-02-20 00:00:00.000
+}
+
+            </code></pre>
         </div>
     </div>
 
     <!-- Karakter khusus & konflik nama -->
     <div class="card">
-        <div class="card-header"><h2>🌴 Simbol & Resolusi Konflik</h2></div>
+        <div class="card-header"><h2>Konflik Nama Extension</h2></div>
         <div class="card-body">
             <p style="font-family: monospace; background:#173f2b; padding:0.5rem; border-radius: 1rem; word-break: break-all; font-size: clamp(0.7rem, 2.5vw, 0.85rem);">                                 ¡ ¢ £ ¤ ¥ ¦ § ¨ © ª « ¬ ­ ® ¯ ° ± ² ³ ´ µ ¶ · ¸ ¹ º » ¼ ½ ¾ ¿ À Á Â Ã Ä Å Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ</p>
             <hr>
-            <pre><code>// File: string_extensions.dart
-extension StringCaseExtensions on String { String capitalize() => /* ... */; }
-// File: text_utils.dart
-extension TextUtilsExtensions on String { String capitalize() => /* ... berbeda ... */; }
-
-// Solusi: prefix atau hide
-import 'string_extensions.dart' as se;
-import 'text_utils.dart' hide capitalize;
-
-void main(){
-    var text = 'hello';
-    // text.capitalize(); // ambiguous
-    se.capitalize(text);
-}</code></pre>
+            <pre><code>
+                
+            </code></pre>
         </div>
     </div>
 
