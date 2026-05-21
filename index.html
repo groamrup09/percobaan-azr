@@ -731,7 +731,6 @@ void main() {
 
             <div class="card">
         <h1>📚 Jawaban Soal Extension Dart</h1>
-        <p>subtitle">Konflik Nama Extension & Akses Member Private</p>
             </div>
     <!-- ==================== SOAL 1 ==================== -->
     <div class="card">
@@ -782,7 +781,7 @@ void main() {
             </div>
 
 <div class="card">
-    <p>tag tag-success">✅ SOLUSI 1: Ubah Nama Method (Pilihan)</p>
+    <p>tag tag-success">✅ SOLUSI: Ubah Nama Method (Pilihan)</p>
             <pre>
 // Nama: Azriel Miracle Yuandre
 // Nim: 251410024
@@ -810,6 +809,108 @@ void main() {
       </button>
     
     <p><strong>✅ Kesimpulan Soal 1:</strong> Solusi terbaik adalah <strong>mengganti nama method</strong> menjadi <code>toDouble()</code> agar tidak terjadi konflik dengan method <code>toInt()</code>.</p>
+        </div>
+
+
+         <div class="card">
+        <h1>📚 Jawaban Soal Extension Method Tidak Bisa Mengakses Member Private</h1>
+            </div>
+    <!-- ==================== SOAL 1 ==================== -->
+    <div class="card">
+            <h2>📌 Soal 2: Konflik Nama Antar Extension</h2>
+            <h3>Dua extension dengan nama method yang sama</h3>
+        </div>
+        <div class="card">
+            <div class="code-title"><span class="tag">❌ Kode Bermasalah</span></div>
+            <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                 
+class Counter {
+  int _value = 0;  // private
+
+  void increment() {
+    _value++;
+  }
+}
+
+extension CounterStats on Counter {
+  int getValue() {
+    return _value;  // ← baris ini bermasalah
+  }
+}
+
+void main() {
+  var c = Counter();
+  c.increment();
+  print(c.getValue());
+}
+            </pre>
+            <button class="btn" onclick="openModal('220e36901e20afaa7a381eee05f57f9a')">
+        Lihat Kode
+      </button>
+
+          
+                <p><strong>⚠️ Apa yang Terjadi?</strong></p>
+                <p> Saat kode dikompilasi, akan terjadi <strong>ERROR kompilasi</strong></p>
+                
+            </div>
+
+            <div class="card">
+                <strong>📖 Penjelasan Penyebab:</strong>
+                <table>
+                <tr><th>Penyebab</th><th>Penjelasan</th</tr>
+                <tr><td><strong>Private Member</strong></td>
+                    <td>Di Dart, identifier yang diawali underscore <code>_value</code> bersifat <strong>private</strong> (hanya bisa diakses di library yang sama)</td>
+                </tr>
+                <tr><td><strong>Extension Berbeda Library</strong></td>
+                    <td>Extension <code>CounterStats</code> berada di luar library class <code>Counter</code>, sehingga tidak memiliki akses ke member private</td>
+                </tr>
+                <tr><td><strong>Prinsip Encapsulation</strong></td>
+                    <td>Private member adalah implementasi detail yang tidak boleh diakses dari luar class</td>
+                </tr>
+                <tr><td><strong>Extension Bukan Bagian Class</strong></td>
+                    <td>Extension hanyalah "tambahan" dari luar, bukan bagian internal class, sehingga tidak punya hak istimewa</td>
+                </tr>
+                </table>
+            </div>
+
+<div class="card">
+    <p>tag tag-success">✅ SOLUSI: Tambahkan Getter Publik (Rekomendasi)</p>
+            <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A                 
+class Counter {
+  int _value = 0;  // ✅ TETAP PRIVATE (tidak diubah jadi publik)
+
+  void increment() {
+    _value++;
+  }
+  
+  // ✅ Tambahkan getter publik (tanpa mengubah _value jadi publik)
+  int get value => _value;
+}
+
+extension CounterStats on Counter {
+  int getValue() {
+    return value;  // ✅ Akses melalui getter publik
+  }
+}
+
+void main() {
+  var c = Counter();
+  c.increment();
+  c.increment();
+  c.increment();
+  print('Nilai counter: ${c.getValue()}'); // Output: 3
+}
+            </pre>
+             <button class="btn" onclick="openModal('45dd7253fa1d1b1f3d6d0f87fed0c00e')">
+        Lihat Kode
+      </button>
+    
+    <p><strong>✅ Kesimpulan Soal 2:</strong>Solusi terbaik untuk kasus ini adalah <strong>menambahkan getter publik</strong></p>
         </div>
 
 
