@@ -728,6 +728,81 @@ void main() {
             <div class="note-forest">🌳 Best practices lengkap: Nama jelas, group by type, hindari overuse, null safety, dan dokumentasi selaras dengan semangat rainforest guardian: <strong>berkelanjutan & mudah dirawat</strong>.</div>
         </div>
     </div>
+
+            <div class="header">
+        <h1>📚 Jawaban Soal Extension Dart</h1>
+        <p class="subtitle">Konflik Nama Extension & Akses Member Private</p>
+        <div>
+            <span class="badge">Azriel Miracle Yuandre</span>
+            <span class="badge">251410024</span>
+            <span class="badge">SI2A</span>
+        </div>
+    </div>
+
+    <!-- ==================== SOAL 1 ==================== -->
+    <div class="card">
+        <div class="card-header">
+            <h2>📌 Soal 1: Konflik Nama Antar Extension</h2>
+            <h3>Dua extension dengan nama method yang sama</h3>
+        </div>
+        <div class="card-body">
+            <div class="code-title"><span class="tag">❌ Kode Bermasalah</span></div>
+            <pre>
+extension StringNumber on String {
+  int toInt() {
+    return int.parse(this);
+  }
+}
+
+extension StringDouble on String {
+  double toInt() {  // ← perhatikan nama method sama, return type beda
+    return double.parse(this);
+  }
+}
+
+void main() {
+  String angka = '123';
+  print(angka.toInt());
+}
+            </pre>
+
+            <div class="info-box error-box">
+                <strong>⚠️ Apa yang Terjadi?</strong><br>
+                Saat kode dijalankan, akan terjadi <strong>ERROR kompilasi</strong>:
+                <pre style="margin-top: 10px; background: #2a1a1a;">Error: The method 'toInt' is defined in both 'StringNumber' and 'StringDouble'</pre>
+            </div>
+
+            <div class="info-box">
+                <strong>📖 Penjelasan Penyebab:</strong>
+                <table>
+                    <tr><th>Masalah</th><td>Kedua extension memiliki method dengan nama yang sama yaitu <code>toInt()</code></td></tr>
+                    <tr><th>Return type berbeda</th><td>Satu return <code>int</code>, satu return <code>double</code></td></tr>
+                    <tr><th>Dart tidak bisa membedakan</th><td>Compiler bingung method <code>toInt()</code> mana yang dipanggil</td></tr>
+                    <tr><th>Ambiguous reference</th><td>Referensi method tidak jelas (ambigu)</td></tr>
+                </table>
+            </div>
+
+<div class="code-title"><span class="tag tag-success">✅ SOLUSI 1: Ubah Nama Method (Pilihan)</span></div>
+            <pre>
+extension StringNumber on String {
+  int toInt() {
+    return int.parse(this);
+  }
+}
+
+extension StringDouble on String {
+  double toDouble() {  // ✅ Ganti nama jadi toDouble()
+    return double.parse(this);
+  }
+}
+
+void main() {
+  String angka = '123';
+  print(angka.toInt());     // Output: 123
+  print(angka.toDouble());  // Output: 123.0
+}
+            </pre>
+        </div>
      <!-- MODAL DINAMIS (Cukup Satu Saja) -->
   <div id="dynamicModal" class="modal">
     <div class="modal-content">
